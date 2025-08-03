@@ -12,12 +12,7 @@ async function connectQueue() {
     await channel.assertQueue("noti-queue");
     channel.consume("noti-queue", async (data) => {
       const object = JSON.parse(`${Buffer.from(data.content)}`);
-      await EmailService.sendEmail(
-        ServerConfig.GMAIL_EMAIL,
-        object.recepientEmail,
-        object.subject,
-        object.text
-      );
+      await EmailService.sendEmail(ServerConfig.GMAIL_EMAIL, object);
       channel.ack(data);
     });
   } catch (error) {
